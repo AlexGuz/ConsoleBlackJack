@@ -31,7 +31,7 @@ namespace ConsoleBlackJack
             List<Card> deck = new List<Card>();
             for (int i = 0; i < Enum.GetNames(typeof(Suit)).Length; i++)
             {
-                for (int j = 0; j < rankLenght; j++)
+                for (int j = 0; j < rankLenght-1; j++)
                 {
                     int point = j + rankCorrectionFactor;
                     if (point > (int)Rank.Ace && point < (int)Rank.King)
