@@ -13,7 +13,7 @@ namespace ConsoleBlackJack
         private const int figurePoint = 10;
         private const int rankCorrectionFactor = 2;
 
-        public void ShowCards<T>(T player) where T : Gambler
+        internal void ShowCards(Gambler player)
         {
             Console.WriteLine(player.Name);
             foreach (var card in player.playerCards)
@@ -21,8 +21,17 @@ namespace ConsoleBlackJack
                 Console.WriteLine("{0} {1} {2}", card.Rank, card.Suit, card.Point);
             }
             GameService.CardCounter(player);
-            Console.WriteLine($"Total points: {player.PlayerPoint}");
-
+            if (player.Type==PlayerType.Player)
+            {
+                Console.WriteLine("---------------------");
+                Console.WriteLine($"Total points: {player.PlayerPoint}");
+                Console.WriteLine($"Player bet: {player.bet}");
+                Console.WriteLine($"Player cash: {player.cash}");
+            }
+            else
+            {
+                Console.WriteLine($"Total points: {player.PlayerPoint}");
+            }
             Console.WriteLine("---------------------");
         }
 
@@ -31,10 +40,10 @@ namespace ConsoleBlackJack
             List<Card> deck = new List<Card>();
             for (int i = 0; i < Enum.GetNames(typeof(Suit)).Length; i++)
             {
-                for (int j = 0; j < rankLenght-1; j++)
+                for (int j = 0; j < rankLenght - 1; j++)
                 {
                     int point = j + rankCorrectionFactor;
-                    if (point > (int)Rank.Ace && point < (int)Rank.King)
+                    if (point > (int)Rank.Ace && point <= (int)Rank.King)
                     {
                         point = figurePoint;
                     }

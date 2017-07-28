@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace ConsoleBlackJack
 {
-    class Diller : Gambler
+    public class Money
     {
-        public int dillerMaxHandPoint = 17;
-        public Diller(PlayerType diller) : base(diller)
-        { }
+        public const double blackJackWinnings = 1.5;
+        public const double standartWinnings = 1;
     }
 }
