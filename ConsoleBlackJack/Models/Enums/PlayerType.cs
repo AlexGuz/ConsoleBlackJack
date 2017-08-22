@@ -2,7 +2,7 @@
 {
     public enum PlayerType
     {
-        Player,
-        Diller
+        Player = 0,
+        Diller = 1
     }
 }

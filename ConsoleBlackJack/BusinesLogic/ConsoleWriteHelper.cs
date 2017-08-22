@@ -8,12 +8,12 @@ namespace ConsoleBlackJack
 {
     internal class ConsoleWriteHelper
     {
-        private EventMessage eventMessage;
+        private EventMessage _eventMessage;
 
         public ConsoleWriteHelper(EventMessage eventMessage)
         {
-            this.eventMessage = eventMessage;
-            this.eventMessage.OngameEvent += OnWriteMessageOnConsole;
+            _eventMessage = eventMessage;
+            _eventMessage.OngameEvent += OnWriteMessageOnConsole;
         }
 
         public void OnWriteMessageOnConsole(object sender, string e)

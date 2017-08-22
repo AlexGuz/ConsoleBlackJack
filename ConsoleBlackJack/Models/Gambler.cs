@@ -16,6 +16,7 @@ namespace ConsoleBlackJack
         public bool EndTurn { get; set; }
         public readonly int maxPoint = 21;
         public int dillerMaxHandPoint = 17;
+        public string dillerName = "Tommy Hyland";
         public int cash;
         public int bet;
         public bool IsLoose;

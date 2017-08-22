@@ -8,15 +8,13 @@ namespace ConsoleBlackJack
 {
     class Program
     {
-        private const string GameTitle = "Playing BlackJack";
-        private static Gambler _player = new Gambler(PlayerType.Player);
-        private static Gambler _diller = new Gambler(PlayerType.Diller);
+        private const string GameTitle = "Playing BlackJack";        
 
         static void Main(string[] args)
         {
             Console.WriteLine(GameTitle);
             Game game = new Game();
-            Game.FirstDistribution(_player, _diller);
+            GameProvider.FirstDistribution(game.player, game.diller);
         }
     }
 }

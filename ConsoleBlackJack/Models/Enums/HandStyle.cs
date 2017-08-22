@@ -2,7 +2,7 @@
 {
     public enum HandStyle
     {
-        Soft,
-        Hard
+        Soft = 0,
+        Hard = 1
     }
 }

@@ -8,35 +8,32 @@ namespace ConsoleBlackJack
 {
     class GamblerService
     {
-        private static GameService _gameService = new GameService();
-        private static VictoryConditions _victory = new VictoryConditions();
-
-        internal void DillerGame(Gambler player, Gambler diller)
-        {
-            player.EndTurn = true;
-            player.IsLoose = _victory.IsLosing(player, diller);
-            if (diller.PlayerPoint < diller.dillerMaxHandPoint)
-            {
-                _gameService.NextTurnGame(diller, player);
-            }
-            else
-            {
-                diller.IsLoose = _victory.IsLosing(diller, player);
-                _victory.CheckVictoryConditions(player, diller);
-            }
-        }
-
         internal void PlayerGame(Gambler diller, Gambler player)
         {
             Dictionary<string, Action<Gambler, Gambler>> choiseOperations = new Dictionary<string, Action<Gambler, Gambler>>
             {
-                {EventMessage.YesKey, _gameService.NextTurnGame},
-                {EventMessage.NoKey, DillerGame},
-                {EventMessage.Default, PlayerGame}
+                {EventMessageConst.YesKey, GameProvider.NextTurnGame},
+                {EventMessageConst.NoKey, DillerGame},
+                {EventMessageConst.Default, PlayerGame}
             };
 
-            Game._eventMessage.HandleGameEvent(EventMessage.AddCardeMessage);
-            Game._eventMessage.WorkWithGamblerDictionary(player, diller, choiseOperations);
+            Game.eventMessage.HandleGameEvent(EventMessageConst.AddCardeMessage);
+            Game.eventMessage.WorkWithGamblerDictionary(player, diller, choiseOperations);
+        }
+
+        internal void DillerGame(Gambler player, Gambler diller)
+        {
+            player.EndTurn = true;
+            player.IsLoose = VictoryConditions.IsLosing(player, diller);
+            if (diller.PlayerPoint < diller.dillerMaxHandPoint)
+            {
+                GameProvider.NextTurnGame(diller, player);
+                return;
+            }
+
+            diller.IsLoose = VictoryConditions.IsLosing(diller, player);
+            diller.EndTurn = true;
+            GameProvider.ExitGame(diller, player);
         }
 
         internal void ChangeHand(Gambler player)
@@ -44,24 +41,22 @@ namespace ConsoleBlackJack
             if (player.Type == PlayerType.Player)
             {
                 PlayerHand(player, null);
+                return;
             }
-            else
-            {
-                DillerHand(player);
-            }
+            DillerHand(player);
         }
 
         private void PlayerHand(Gambler player, Gambler diller)
         {
             Dictionary<string, Action<Gambler, Gambler>> choiseOperations = new Dictionary<string, Action<Gambler, Gambler>>
             {
-                {EventMessage.YesKey, HardHandStyle},
-                {EventMessage.NoKey, null},
-                {EventMessage.Default, PlayerHand}
+                {EventMessageConst.YesKey, HardHandStyle},
+                {EventMessageConst.NoKey, null},
+                {EventMessageConst.Default, PlayerHand}
             };
 
-            Game._eventMessage.HandleGameEvent(EventMessage.ChangeHandMessage);
-            Game._eventMessage.WorkWithGamblerDictionary(player, diller, choiseOperations);
+            Game.eventMessage.HandleGameEvent(EventMessageConst.ChangeHandMessage);
+            Game.eventMessage.WorkWithGamblerDictionary(player, diller, choiseOperations);
         }
 
         private static void HardHandStyle(Gambler player, Gambler diller)
@@ -71,7 +66,7 @@ namespace ConsoleBlackJack
             {
                 if (player.playerCards[i].Rank == Rank.Ace)
                 {
-                    player.playerCards[i].Point = 1;
+                    player.playerCards[i].Point = (int)Rank.AceByHardHand;
                     break;
                 }
             }

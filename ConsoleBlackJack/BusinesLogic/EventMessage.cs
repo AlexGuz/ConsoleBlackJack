@@ -9,18 +9,6 @@ namespace ConsoleBlackJack
 {
     class EventMessage
     {
-        internal const string StartGameMessage = "Start new game? y - yes, n - no";
-        internal const string EndGameMessage = "See you!";
-        internal const string AddCardeMessage = "Add one card? y - yes, n - no";
-        internal const string ChangeHandMessage = "Change hand? y - yes, n - no";
-        internal const string InvalidInputMessage = "Invalid Input";
-        internal const string NotEnoughMoney = "You've lost everything. Send home for money? y - yes, n - no";
-        internal const string YesKey = "Y";
-        internal const string NoKey = "N";
-        internal const string Default = "Default";
-
-
-
         public event EventHandler<string> OngameEvent;
 
         public virtual void HandleGameEvent(string e)
@@ -37,12 +25,11 @@ namespace ConsoleBlackJack
             if (choiseOperations.ContainsKey(choise) & Regex.Match(choise, Game.regularExpression).Success)
             {
                 choiseOperations[choise](player, diller);
+                return;
             }
-            else
-            {
-                HandleGameEvent(InvalidInputMessage);
-                choiseOperations[Default](player, diller);
-            }
+
+            HandleGameEvent(EventMessageConst.InvalidInputMessage);
+            choiseOperations[EventMessageConst.Default](player, diller);
         }
 
         internal void WorkWithMoneyDictionary(Gambler player, Dictionary<string, Action<Gambler>> choiseOperations)
@@ -52,12 +39,11 @@ namespace ConsoleBlackJack
             if (choiseOperations.ContainsKey(choise) & Regex.Match(choise, Game.regularExpression).Success)
             {
                 choiseOperations[choise](player);
+                return;
             }
-            else
-            {
-                HandleGameEvent(InvalidInputMessage);
-                choiseOperations[Default](player);
-            }
+
+            HandleGameEvent(EventMessageConst.InvalidInputMessage);
+            choiseOperations[EventMessageConst.Default](player);
         }
     }
 }

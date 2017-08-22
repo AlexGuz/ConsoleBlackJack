@@ -8,47 +8,39 @@ namespace ConsoleBlackJack
 {
     class MoneyService
     {
-        private GameService _gameService = new GameService();
-
         internal void EnterBet(Gambler player)
         {
             if (MoneyCounter(player))
             {
                 Console.WriteLine($"You have {player.cash}. Enter you bet");
                 BetCounter(player);
+                return;
             }
-            else
-            {
-                GoForTheMoney(player);
-                _gameService.ExitGame(player, null);
-            }
+
+            GoForTheMoney(player);
+            GameProvider.ExitGame(player, null);
         }
 
-        internal void ReturnBet(Gambler player)
-        {
-            player.cash += player.bet;
-        }
-
-        internal void BlackJackWinnings(Gambler player)
+        internal static void BlackJackWinnings(Gambler player)
         {
             Console.WriteLine($"BjackJack!!!!!!!!!!!!!{player.Name} Victory!!!");
 
-            double winnings = player.bet * Money.blackJackWinnings;
+            double winnings = player.bet * MoneyConst.BlackJackWinnings;
 
             Console.WriteLine($"Your winnings is {winnings}, your bet {player.bet} will be added to the winnings");
 
-            player.cash = player.bet + (int)winnings;            
+            player.cash += player.bet + (int)winnings;
         }
 
-        internal void ClasicWinnings(Gambler player)
+        internal static void ClasicWinnings(Gambler player)
         {
             Console.WriteLine($"{player.Name} Victory!");
 
-            double winnings = player.bet * Money.standartWinnings;
+            double winnings = player.bet * MoneyConst.StandartWinnings;
 
             Console.WriteLine($"Your winnings is {winnings}, your bet {player.bet} will be added to the winnings");
 
-            player.cash = player.bet + (int)winnings;
+            player.cash += player.bet + (int)winnings;
         }
 
         private void BetCounter(Gambler player)
@@ -59,12 +51,11 @@ namespace ConsoleBlackJack
             {
                 player.bet = bet;
                 player.cash -= bet;
+                return;
             }
-            else
-            {
-                Game._eventMessage.HandleGameEvent(EventMessage.InvalidInputMessage);
-                EnterBet(player);
-            }
+
+            Game.eventMessage.HandleGameEvent(EventMessageConst.InvalidInputMessage);
+            EnterBet(player);
         }
 
         private bool MoneyCounter(Gambler player)
@@ -80,12 +71,12 @@ namespace ConsoleBlackJack
         {
             Dictionary<string, Action<Gambler>> choiseOperations = new Dictionary<string, Action<Gambler>>
             {
-                {EventMessage.YesKey, AddMoney},
-                {EventMessage.NoKey, null},
-                {EventMessage.Default, GoForTheMoney}
+                {EventMessageConst.YesKey, AddMoney},
+                {EventMessageConst.NoKey, null},
+                {EventMessageConst.Default, GoForTheMoney}
             };
-            Game._eventMessage.HandleGameEvent(EventMessage.NotEnoughMoney);
-            Game._eventMessage.WorkWithMoneyDictionary(player, choiseOperations);
+            Game.eventMessage.HandleGameEvent(EventMessageConst.NotEnoughMoney);
+            Game.eventMessage.WorkWithMoneyDictionary(player, choiseOperations);
         }
 
         private void AddMoney(Gambler player)

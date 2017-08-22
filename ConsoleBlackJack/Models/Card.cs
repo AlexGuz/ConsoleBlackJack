@@ -11,5 +11,6 @@ namespace ConsoleBlackJack
         public Rank Rank { get; set; }
         public Suit Suit { get; set; }
         public int Point { get; set; }
+        public const int MinDeckCapacity = 5;
     }
 }

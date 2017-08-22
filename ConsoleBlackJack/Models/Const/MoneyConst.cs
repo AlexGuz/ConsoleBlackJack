@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ConsoleBlackJack
 {
-    public class Money
+    static class MoneyConst
     {
-        public const double blackJackWinnings = 1.5;
-        public const double standartWinnings = 1;
+        public const double BlackJackWinnings = 1.5;
+        public const double StandartWinnings = 1;
     }
 }

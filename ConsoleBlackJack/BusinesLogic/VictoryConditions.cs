@@ -8,26 +8,22 @@ namespace ConsoleBlackJack
 {
     class VictoryConditions
     {
-        private static GameService _gameService = new GameService();
-        private MoneyService _moneyService = new MoneyService();
-
         internal void CheckVictoryConditions(Gambler player, Gambler diller)
         {
             if (player.IsLoose & diller.IsLoose || player.PlayerPoint == diller.PlayerPoint)
             {
                 Console.WriteLine($"{player.Name} and {diller.Name} dead heat !!!");
-                _moneyService.ReturnBet(player);
+                player.cash += player.bet;
+                return;
             }
-            else
-            {
-                CheckAllConditions(player, diller);
-            }
+
+            CheckAllConditions(player, diller);
         }
-       
-        internal bool IsLosing(Gambler player, Gambler diller)
+
+        internal static bool IsLosing(Gambler player, Gambler diller)
         {
             bool isLosing = player.PlayerPoint > player.maxPoint;
-            
+
             return isLosing;
         }
 
@@ -35,11 +31,11 @@ namespace ConsoleBlackJack
         {
             if (IsAceOnHend(player.playerCards) & IsFigureOnHend(player.playerCards))
             {
-                _moneyService.BlackJackWinnings(player);
-                _gameService.NewGameSelector(player, diller);
+                MoneyService.BlackJackWinnings(player);
+                GameProvider.NewGameSelector(player, diller);
             }
         }
-        
+
         internal static bool IsAceOnHend(List<Card> playerCards)
         {
             bool isAce = false;
@@ -59,14 +55,13 @@ namespace ConsoleBlackJack
             if (player.PlayerPoint > diller.PlayerPoint & !player.IsLoose)
             {
                 Console.WriteLine($"{player.Name} Victory!!!");
-                _gameService.NewGameSelector(player, diller);
-                _moneyService.ClasicWinnings(player);
+                MoneyService.ClasicWinnings(player);
+                GameProvider.NewGameSelector(player, diller);
+                return;
             }
-            else
-            {
-                Console.WriteLine($"{player.Name} Bust! The game is over");
-                _gameService.NewGameSelector(player, diller);
-            }
+
+            Console.WriteLine($"{player.Name} Bust! The game is over");
+            GameProvider.NewGameSelector(player, diller);
         }
 
         private bool IsFigureOnHend(List<Card> playerCards)

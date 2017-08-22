@@ -8,10 +8,8 @@ namespace ConsoleBlackJack
 {
     class CardService
     {
-        private static Random rand = new Random();
-        private static int rankLenght = Enum.GetNames(typeof(Rank)).Length;
-        private const int figurePoint = 10;
-        private const int rankCorrectionFactor = 2;
+        private static Random _rand = new Random();
+        private static int _rankLenght = Enum.GetNames(typeof(Rank)).Length;
 
         internal void ShowCards(Gambler player)
         {
@@ -20,18 +18,18 @@ namespace ConsoleBlackJack
             {
                 Console.WriteLine("{0} {1} {2}", card.Rank, card.Suit, card.Point);
             }
-            GameService.CardCounter(player);
-            if (player.Type==PlayerType.Player)
+            CardCounter(player);
+            if (player.Type == PlayerType.Player)
             {
                 Console.WriteLine("---------------------");
                 Console.WriteLine($"Total points: {player.PlayerPoint}");
                 Console.WriteLine($"Player bet: {player.bet}");
                 Console.WriteLine($"Player cash: {player.cash}");
+                Console.WriteLine("---------------------");
+                return;
             }
-            else
-            {
-                Console.WriteLine($"Total points: {player.PlayerPoint}");
-            }
+
+            Console.WriteLine($"Total points: {player.PlayerPoint}");
             Console.WriteLine("---------------------");
         }
 
@@ -40,17 +38,17 @@ namespace ConsoleBlackJack
             List<Card> deck = new List<Card>();
             for (int i = 0; i < Enum.GetNames(typeof(Suit)).Length; i++)
             {
-                for (int j = 0; j < rankLenght - 1; j++)
+                for (int j = 0; j < _rankLenght - 1; j++)
                 {
-                    int point = j + rankCorrectionFactor;
+                    int point = j + CardServiceConst.rankCorrectionFactor;
                     if (point > (int)Rank.Ace && point <= (int)Rank.King)
                     {
-                        point = figurePoint;
+                        point = CardServiceConst.figurePoint;
                     }
 
                     deck.Add(new Card()
                     {
-                        Rank = (Rank)j + rankCorrectionFactor,
+                        Rank = (Rank)j + CardServiceConst.rankCorrectionFactor,
                         Suit = (Suit)i,
                         Point = point,
                     });
@@ -71,10 +69,26 @@ namespace ConsoleBlackJack
 
         internal Card AddCard(ref List<Card> deck)
         {
-            int addCardId = rand.Next(0, deck.Count);
+            if (deck.Count < Card.MinDeckCapacity)
+            {
+                deck = CreateDeck();
+            }
+
+            int addCardId = _rand.Next(0, deck.Count);
             Card playerCard = deck[addCardId];
             deck.Remove(playerCard);
             return playerCard;
+        }
+
+        private void CardCounter(Gambler player)
+        {
+            int points = 0;
+
+            foreach (var card in player.playerCards)
+            {
+                points += card.Point;
+            }
+            player.PlayerPoint = points;
         }
     }
 }
