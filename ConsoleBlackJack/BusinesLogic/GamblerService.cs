@@ -17,23 +17,28 @@ namespace ConsoleBlackJack
                 {EventMessageConst.Default, PlayerGame}
             };
 
-            Game.eventMessage.HandleGameEvent(EventMessageConst.AddCardeMessage);
+            Game.eventMessage.HandleGameEvent(EventMessageConst.AddCardMessage);
             Game.eventMessage.WorkWithGamblerDictionary(player, diller, choiseOperations);
         }
 
         internal void DillerGame(Gambler player, Gambler diller)
         {
             player.EndTurn = true;
-            player.IsLoose = VictoryConditions.IsLosing(player, diller);
-            if (diller.PlayerPoint < diller.dillerMaxHandPoint)
+            player.IsLoose = VictoryConditions.IsLosing(player);
+            DillerTurn(diller, player);
+        }
+
+        internal void DillerTurn(Gambler diller, Gambler player)
+        {
+            if (diller.PlayerPoint < GamblerConst.DillerMaxHandPoint)
             {
                 GameProvider.NextTurnGame(diller, player);
                 return;
             }
 
-            diller.IsLoose = VictoryConditions.IsLosing(diller, player);
+            diller.IsLoose = VictoryConditions.IsLosing(diller);
             diller.EndTurn = true;
-            GameProvider.ExitGame(diller, player);
+            GameProvider.ExitGame(player, diller);
         }
 
         internal void ChangeHand(Gambler player)
@@ -44,6 +49,16 @@ namespace ConsoleBlackJack
                 return;
             }
             DillerHand(player);
+        }
+
+        internal void ClearGamblerData(Gambler player)
+        {
+            player.Bet = 0;
+            player.EndTurn = false;
+            player.IsLoose = false;
+            player.PlayerPoint = 0;
+            player.Style = HandStyle.Soft;
+            player.playerCards.Clear();
         }
 
         private void PlayerHand(Gambler player, Gambler diller)
@@ -74,7 +89,7 @@ namespace ConsoleBlackJack
 
         private void DillerHand(Gambler diller)
         {
-            if (diller.PlayerPoint > diller.dillerMaxHandPoint)
+            if (diller.PlayerPoint > GamblerConst.DillerMaxHandPoint)
             {
                 diller.Style = HandStyle.Hard;
                 for (int i = 0; i < diller.playerCards.Count; i++)

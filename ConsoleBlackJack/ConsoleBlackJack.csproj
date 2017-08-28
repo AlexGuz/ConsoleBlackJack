@@ -45,13 +45,14 @@
   <ItemGroup>
     <Compile Include="BusinesLogic\ConsoleWriteHelper.cs" />
     <Compile Include="BusinesLogic\GamblerService.cs" />
+    <Compile Include="Models\Const\GamblerConst.cs" />
     <Compile Include="Models\Const\CardServiceConst.cs" />
     <Compile Include="Models\Const\EventMessageConst.cs" />
     <Compile Include="BusinesLogic\GameProvider.cs" />
     <Compile Include="BusinesLogic\EventMessage.cs" />
     <Compile Include="BusinesLogic\CardService.cs" />
     <Compile Include="Models\Gambler.cs" />
-    <Compile Include="Models\Game.cs" />
+    <Compile Include="BusinesLogic\Game.cs" />
     <Compile Include="Models\Card.cs" />
     <Compile Include="Models\Enums\HandStyle.cs" />
     <Compile Include="Models\Enums\PlayerType.cs" />

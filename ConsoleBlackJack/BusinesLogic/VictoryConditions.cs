@@ -13,16 +13,17 @@ namespace ConsoleBlackJack
             if (player.IsLoose & diller.IsLoose || player.PlayerPoint == diller.PlayerPoint)
             {
                 Console.WriteLine($"{player.Name} and {diller.Name} dead heat !!!");
-                player.cash += player.bet;
+                player.Cash += player.Bet;
+                GameProvider.NewGameSelector(player, diller);
                 return;
             }
 
             CheckAllConditions(player, diller);
         }
 
-        internal static bool IsLosing(Gambler player, Gambler diller)
+        internal static bool IsLosing(Gambler player)
         {
-            bool isLosing = player.PlayerPoint > player.maxPoint;
+            bool isLosing = player.PlayerPoint > GamblerConst.MaxPoint;
 
             return isLosing;
         }
@@ -60,7 +61,20 @@ namespace ConsoleBlackJack
                 return;
             }
 
-            Console.WriteLine($"{player.Name} Bust! The game is over");
+            DillerVictory(player, diller);
+        }
+
+        private void DillerVictory(Gambler player, Gambler diller)
+        {
+            if (!diller.IsLoose)
+            {
+                Console.WriteLine($"{player.Name} Bust! The game is over");
+                GameProvider.NewGameSelector(player, diller);
+                return;
+            }
+
+            Console.WriteLine($"{diller.Name} Bust! The game is over");
+            MoneyService.ClasicWinnings(player);
             GameProvider.NewGameSelector(player, diller);
         }
 

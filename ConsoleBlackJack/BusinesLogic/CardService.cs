@@ -13,7 +13,7 @@ namespace ConsoleBlackJack
 
         internal void ShowCards(Gambler player)
         {
-            Console.WriteLine(player.Name);
+            Console.WriteLine(player.Name + "\n");
             foreach (var card in player.playerCards)
             {
                 Console.WriteLine("{0} {1} {2}", card.Rank, card.Suit, card.Point);
@@ -23,12 +23,13 @@ namespace ConsoleBlackJack
             {
                 Console.WriteLine("---------------------");
                 Console.WriteLine($"Total points: {player.PlayerPoint}");
-                Console.WriteLine($"Player bet: {player.bet}");
-                Console.WriteLine($"Player cash: {player.cash}");
+                Console.WriteLine($"Player bet: {player.Bet}");
+                Console.WriteLine($"Player cash: {player.Cash}");
                 Console.WriteLine("---------------------");
                 return;
             }
 
+            Console.WriteLine("---------------------");
             Console.WriteLine($"Total points: {player.PlayerPoint}");
             Console.WriteLine("---------------------");
         }
@@ -40,15 +41,15 @@ namespace ConsoleBlackJack
             {
                 for (int j = 0; j < _rankLenght - 1; j++)
                 {
-                    int point = j + CardServiceConst.rankCorrectionFactor;
+                    int point = j + CardServiceConst.RankCorrectionFactor;
                     if (point > (int)Rank.Ace && point <= (int)Rank.King)
                     {
-                        point = CardServiceConst.figurePoint;
+                        point = CardServiceConst.FigurePoint;
                     }
 
                     deck.Add(new Card()
                     {
-                        Rank = (Rank)j + CardServiceConst.rankCorrectionFactor,
+                        Rank = (Rank)j + CardServiceConst.RankCorrectionFactor,
                         Suit = (Suit)i,
                         Point = point,
                     });
@@ -69,7 +70,7 @@ namespace ConsoleBlackJack
 
         internal Card AddCard(ref List<Card> deck)
         {
-            if (deck.Count < Card.MinDeckCapacity)
+            if (deck.Count < CardServiceConst.MinDeckCapacity)
             {
                 deck = CreateDeck();
             }

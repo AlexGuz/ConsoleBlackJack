@@ -10,11 +10,11 @@ namespace ConsoleBlackJack
     {
         internal Gambler player = new Gambler(PlayerType.Player);
         internal Gambler diller = new Gambler(PlayerType.Diller);
-        private CardService _cardService = new CardService();
         internal static EventMessage eventMessage = new EventMessage();
-        private ConsoleWriteHelper _consoleWrite;
         internal static List<Card> deck;
         internal static string regularExpression = @"[a-zA-Z]";
+        private CardService _cardService = new CardService();
+        private ConsoleWriteHelper _consoleWrite;
 
         public Game()
         {

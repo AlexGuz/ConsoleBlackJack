@@ -12,7 +12,7 @@ namespace ConsoleBlackJack
         {
             if (MoneyCounter(player))
             {
-                Console.WriteLine($"You have {player.cash}. Enter you bet");
+                Console.WriteLine($"You have {player.Cash}. Enter you bet");
                 BetCounter(player);
                 return;
             }
@@ -25,32 +25,32 @@ namespace ConsoleBlackJack
         {
             Console.WriteLine($"BjackJack!!!!!!!!!!!!!{player.Name} Victory!!!");
 
-            double winnings = player.bet * MoneyConst.BlackJackWinnings;
+            double winnings = player.Bet * MoneyConst.BlackJackWinnings;
 
-            Console.WriteLine($"Your winnings is {winnings}, your bet {player.bet} will be added to the winnings");
+            Console.WriteLine($"Your winnings is {winnings}, your bet {player.Bet} will be added to the winnings");
 
-            player.cash += player.bet + (int)winnings;
+            player.Cash += player.Bet + (int)winnings;
         }
 
         internal static void ClasicWinnings(Gambler player)
         {
             Console.WriteLine($"{player.Name} Victory!");
 
-            double winnings = player.bet * MoneyConst.StandartWinnings;
+            double winnings = player.Bet * MoneyConst.StandartWinnings;
 
-            Console.WriteLine($"Your winnings is {winnings}, your bet {player.bet} will be added to the winnings");
+            Console.WriteLine($"Your winnings is {winnings}, your bet {player.Bet} will be added to the winnings");
 
-            player.cash += player.bet + (int)winnings;
+            player.Cash += player.Bet + (int)winnings;
         }
 
         private void BetCounter(Gambler player)
         {
             int bet = 0;
             bool isBetDone = int.TryParse(Console.ReadLine(), out bet);
-            if (isBetDone & bet <= player.cash)
+            if (isBetDone & bet <= player.Cash)
             {
-                player.bet = bet;
-                player.cash -= bet;
+                player.Bet = bet;
+                player.Cash -= bet;
                 return;
             }
 
@@ -60,7 +60,7 @@ namespace ConsoleBlackJack
 
         private bool MoneyCounter(Gambler player)
         {
-            if (player.cash > 0)
+            if (player.Cash > 0)
             {
                 return true;
             }
@@ -81,7 +81,7 @@ namespace ConsoleBlackJack
 
         private void AddMoney(Gambler player)
         {
-            player.cash = 200;
+            player.Cash = 200;
         }
     }
 }

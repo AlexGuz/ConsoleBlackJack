@@ -22,7 +22,7 @@ namespace ConsoleBlackJack
         {
             string choise = Console.ReadLine().ToUpper();
 
-            if (choiseOperations.ContainsKey(choise) & Regex.Match(choise, Game.regularExpression).Success)
+            if (!string.IsNullOrEmpty(choise) & choiseOperations.ContainsKey(choise) & Regex.Match(choise, Game.regularExpression).Success)
             {
                 choiseOperations[choise](player, diller);
                 return;
@@ -36,7 +36,7 @@ namespace ConsoleBlackJack
         {
             string choise = Console.ReadLine().ToUpper();
 
-            if (choiseOperations.ContainsKey(choise) & Regex.Match(choise, Game.regularExpression).Success)
+            if (!string.IsNullOrEmpty(choise) & choiseOperations.ContainsKey(choise) & Regex.Match(choise, Game.regularExpression).Success)
             {
                 choiseOperations[choise](player);
                 return;

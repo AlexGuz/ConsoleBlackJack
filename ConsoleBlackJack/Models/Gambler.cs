@@ -13,20 +13,17 @@ namespace ConsoleBlackJack
         public int PlayerPoint { get; set; }
         public HandStyle Style { get; set; }
         public PlayerType Type { get; set; }
-        public bool EndTurn { get; set; }
-        public readonly int maxPoint = 21;
-        public int dillerMaxHandPoint = 17;
-        public string dillerName = "Tommy Hyland";
-        public int cash;
-        public int bet;
-        public bool IsLoose;
+        public bool EndTurn { get; set; }        
+        public int Cash { get; set; }
+        public int Bet { get; set; }
+        public bool IsLoose { get; set; }
 
         public Gambler(PlayerType gambler)
         {
             Type = gambler;
             Style = HandStyle.Soft;
-            bet = 0;
-            cash = 200;
+            Bet = 0;
+            Cash = 200;
         }
     }
 }
