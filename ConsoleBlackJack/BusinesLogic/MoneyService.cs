@@ -8,24 +8,24 @@ namespace ConsoleBlackJack
 {
     class MoneyService
     {
-        internal void EnterBet(Gambler player)
+        internal void EnterBet(Gambler player, Gambler diller)
         {
             if (MoneyCounter(player))
             {
                 Console.WriteLine($"You have {player.Cash}. Enter you bet");
-                BetCounter(player);
+                BetCounter(player, diller);
                 return;
             }
 
-            GoForTheMoney(player);
-            GameProvider.ExitGame(player, null);
+            GoForTheMoney(player, diller);
+            GameProvider.NewGameSelector(player, diller);
         }
 
         internal static void BlackJackWinnings(Gambler player)
         {
             Console.WriteLine($"BjackJack!!!!!!!!!!!!!{player.Name} Victory!!!");
 
-            double winnings = player.Bet * MoneyConst.BlackJackWinnings;
+            var winnings = player.Bet * MoneyConst.BlackJackWinnings;
 
             Console.WriteLine($"Your winnings is {winnings}, your bet {player.Bet} will be added to the winnings");
 
@@ -36,14 +36,14 @@ namespace ConsoleBlackJack
         {
             Console.WriteLine($"{player.Name} Victory!");
 
-            double winnings = player.Bet * MoneyConst.StandartWinnings;
+            var winnings = player.Bet * MoneyConst.StandartWinnings;
 
             Console.WriteLine($"Your winnings is {winnings}, your bet {player.Bet} will be added to the winnings");
 
             player.Cash += player.Bet + (int)winnings;
         }
 
-        private void BetCounter(Gambler player)
+        private void BetCounter(Gambler player, Gambler diller)
         {
             int bet = 0;
             bool isBetDone = int.TryParse(Console.ReadLine(), out bet);
@@ -55,7 +55,7 @@ namespace ConsoleBlackJack
             }
 
             Game.eventMessage.HandleGameEvent(EventMessageConst.InvalidInputMessage);
-            EnterBet(player);
+            EnterBet(player, diller);
         }
 
         private bool MoneyCounter(Gambler player)
@@ -67,19 +67,19 @@ namespace ConsoleBlackJack
             return false;
         }
 
-        private void GoForTheMoney(Gambler player)
+        private void GoForTheMoney(Gambler player, Gambler diller)
         {
-            Dictionary<string, Action<Gambler>> choiseOperations = new Dictionary<string, Action<Gambler>>
+            Dictionary<string, Action<Gambler, Gambler>> choiseOperations = new Dictionary<string, Action<Gambler, Gambler>>
             {
                 {EventMessageConst.YesKey, AddMoney},
-                {EventMessageConst.NoKey, null},
+                {EventMessageConst.NoKey, GameProvider.ExitGame},
                 {EventMessageConst.Default, GoForTheMoney}
             };
             Game.eventMessage.HandleGameEvent(EventMessageConst.NotEnoughMoney);
-            Game.eventMessage.WorkWithMoneyDictionary(player, choiseOperations);
+            Game.eventMessage.WorkWithGamblerDictionary(player, diller, choiseOperations);
         }
 
-        private void AddMoney(Gambler player)
+        private void AddMoney(Gambler player, Gambler diller)
         {
             player.Cash = 200;
         }

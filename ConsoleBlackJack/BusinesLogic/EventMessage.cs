@@ -20,9 +20,9 @@ namespace ConsoleBlackJack
 
         internal void WorkWithGamblerDictionary(Gambler player, Gambler diller, Dictionary<string, Action<Gambler, Gambler>> choiseOperations)
         {
-            string choise = Console.ReadLine().ToUpper();
+            var choise = StringCheck();
 
-            if (!string.IsNullOrEmpty(choise) & choiseOperations.ContainsKey(choise) & Regex.Match(choise, Game.regularExpression).Success)
+            if (choiseOperations.ContainsKey(choise) & Regex.Match(choise, Game.regularExpression).Success)
             {
                 choiseOperations[choise](player, diller);
                 return;
@@ -30,20 +30,19 @@ namespace ConsoleBlackJack
 
             HandleGameEvent(EventMessageConst.InvalidInputMessage);
             choiseOperations[EventMessageConst.Default](player, diller);
-        }
+        }        
 
-        internal void WorkWithMoneyDictionary(Gambler player, Dictionary<string, Action<Gambler>> choiseOperations)
+        private static string StringCheck()
         {
-            string choise = Console.ReadLine().ToUpper();
+            var choise = EventMessageConst.Default;
+            string IntroducedChoise = Console.ReadLine().ToUpper();
 
-            if (!string.IsNullOrEmpty(choise) & choiseOperations.ContainsKey(choise) & Regex.Match(choise, Game.regularExpression).Success)
+            if (!string.IsNullOrEmpty(IntroducedChoise))
             {
-                choiseOperations[choise](player);
-                return;
+                choise = IntroducedChoise;
             }
 
-            HandleGameEvent(EventMessageConst.InvalidInputMessage);
-            choiseOperations[EventMessageConst.Default](player);
+            return choise;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace ConsoleBlackJack
 {
     class GamblerService
     {
-        internal void PlayerGame(Gambler diller, Gambler player)
+        internal void PlayerGame(Gambler player, Gambler diller)
         {
             Dictionary<string, Action<Gambler, Gambler>> choiseOperations = new Dictionary<string, Action<Gambler, Gambler>>
             {
@@ -41,11 +41,11 @@ namespace ConsoleBlackJack
             GameProvider.ExitGame(player, diller);
         }
 
-        internal void ChangeHand(Gambler player)
+        internal void ChangeHand(Gambler player, Gambler diller)
         {
             if (player.Type == PlayerType.Player)
             {
-                PlayerHand(player, null);
+                PlayerHand(player, diller);
                 return;
             }
             DillerHand(player);
@@ -66,7 +66,7 @@ namespace ConsoleBlackJack
             Dictionary<string, Action<Gambler, Gambler>> choiseOperations = new Dictionary<string, Action<Gambler, Gambler>>
             {
                 {EventMessageConst.YesKey, HardHandStyle},
-                {EventMessageConst.NoKey, null},
+                {EventMessageConst.NoKey, PlayerGame},
                 {EventMessageConst.Default, PlayerHand}
             };
 

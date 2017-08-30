@@ -21,7 +21,7 @@ namespace ConsoleBlackJack
                 EnterName(player, diller);
             }
 
-            _moneyOp.EnterBet(player);
+            _moneyOp.EnterBet(player, diller);
 
             player.playerCards = _cardService.AddTwoCard(ref Game.deck);
             diller.playerCards = _cardService.AddTwoCard(ref Game.deck);
@@ -53,12 +53,12 @@ namespace ConsoleBlackJack
         {
             if (player.Type == PlayerType.Player)
             {
-                _gamblerService.PlayerGame(diller, player);
+                _gamblerService.PlayerGame(player, diller);
                 return;
             }
 
             _gamblerService.DillerTurn(player, diller);
-        }        
+        }
 
         internal static void NextTurnGame(Gambler player, Gambler diller)
         {
@@ -69,7 +69,7 @@ namespace ConsoleBlackJack
 
             if (VictoryConditions.IsAceOnHend(player.playerCards) & player.Style == HandStyle.Soft & !player.EndTurn)
             {
-                _gamblerService.ChangeHand(player);
+                _gamblerService.ChangeHand(player, diller);
                 _cardService.ShowCards(player);
             }
             OneTurn(player, diller);
@@ -77,7 +77,7 @@ namespace ConsoleBlackJack
 
         internal static void ExitGame(Gambler player, Gambler diller)
         {
-            if (diller != null & player.EndTurn & diller.EndTurn)
+            if (player.EndTurn & diller.EndTurn)
             {
                 _victoryConditions.CheckVictoryConditions(player, diller);
                 return;

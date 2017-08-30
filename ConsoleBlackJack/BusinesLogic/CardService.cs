@@ -36,7 +36,7 @@ namespace ConsoleBlackJack
 
         internal List<Card> CreateDeck()
         {
-            List<Card> deck = new List<Card>();
+            var deck = new List<Card>();
             for (int i = 0; i < Enum.GetNames(typeof(Suit)).Length; i++)
             {
                 for (int j = 0; j < _rankLenght - 1; j++)
@@ -60,7 +60,8 @@ namespace ConsoleBlackJack
 
         internal List<Card> AddTwoCard(ref List<Card> deck)
         {
-            List<Card> playerCards = new List<Card>();
+            var playerCards = new List<Card>();
+            
             for (int i = 0; i < 2; i++)
             {
                 playerCards.Add(AddCard(ref deck));
@@ -75,8 +76,8 @@ namespace ConsoleBlackJack
                 deck = CreateDeck();
             }
 
-            int addCardId = _rand.Next(0, deck.Count);
-            Card playerCard = deck[addCardId];
+            var addCardId = _rand.Next(0, deck.Count);
+            var playerCard = deck[addCardId];
             deck.Remove(playerCard);
             return playerCard;
         }
